@@ -4,16 +4,28 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_rest_api_example/layout/NoteDelete.dart';
 import 'package:flutter_rest_api_example/layout/NoteModify.dart';
 import 'package:flutter_rest_api_example/models/NoteForListing.dart';
+import 'package:flutter_rest_api_example/services/NoteService.dart';
+import 'package:get_it/get_it.dart';
 
-class NoteList extends StatelessWidget {
-  final note = [
-    new NoteForListing('1', 'Hello 1', DateTime.now(), DateTime.now()),
-    new NoteForListing('2', 'Hello 1', DateTime.now(), DateTime.now()),
-    new NoteForListing('3', 'Hello 1', DateTime.now(), DateTime.now()),
-    new NoteForListing('4', 'Hello 1', DateTime.now(), DateTime.now()),
-    new NoteForListing('5', 'Hello 1', DateTime.now(), DateTime.now()),
-    new NoteForListing('6', 'Hello 1', DateTime.now(), DateTime.now()),
-  ];
+class NoteMainList extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _NoteMainList();
+  }
+
+}
+
+class _NoteMainList extends State<NoteMainList> {
+
+  var note = [];
+
+  NoteService get service => GetIt.I<NoteService>();
+
+  @override
+  void initState() {
+    note = service.getNoteList();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,12 +56,15 @@ class NoteList extends StatelessWidget {
                 background: Container(
                   color: Colors.red,
                   padding: EdgeInsets.only(left: 16),
-                  child: Align(child: Icon(Icons.delete , color: Colors.white),alignment: Alignment.centerLeft),
+                  child: Align(child: Icon(Icons.delete, color: Colors.white),
+                      alignment: Alignment.centerLeft),
                 ),
                 child: ListTile(
                   title: Text(
                     note[position].noteTitle,
-                    style: TextStyle(color: Theme.of(context).primaryColor),
+                    style: TextStyle(color: Theme
+                        .of(context)
+                        .primaryColor),
                   ),
                   onTap: () {
                     openNoteModify(context, note[position]);
@@ -59,19 +74,21 @@ class NoteList extends StatelessWidget {
                 ),
               );
             },
-            separatorBuilder: (_, __) => Divider(
+            separatorBuilder: (_, __) =>
+                Divider(
                   height: 1,
                   color: Colors.green,
                 ),
             itemCount: note.length));
   }
+}
 
-  String formateDateTime(var dateTime) {
-    return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
-  }
 
-  void openNoteModify(BuildContext context, var note) {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => NoteModify(note)));
-  }
+String formateDateTime(var dateTime) {
+  return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
+}
+
+void openNoteModify(BuildContext context, var note) {
+  Navigator.push(
+      context, MaterialPageRoute(builder: (context) => NoteModify(note)));
 }
