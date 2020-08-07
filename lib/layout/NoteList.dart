@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_rest_api_example/layout/NoteDelete.dart';
 import 'package:flutter_rest_api_example/layout/NoteModify.dart';
 import 'package:flutter_rest_api_example/models/NoteForListing.dart';
 
@@ -22,22 +23,40 @@ class NoteList extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            openNoteModify(context , NoteForListing());
+            openNoteModify(context, NoteForListing());
           },
           child: Icon(Icons.add),
         ),
         body: ListView.separated(
             itemBuilder: (context, position) {
-              return ListTile(
-                title: Text(
-                  note[position].noteTitle,
-                  style: TextStyle(color: Theme.of(context).primaryColor),
-                ),
-                onTap: () {
-                  openNoteModify(context, note[position]);
+              return Dismissible(
+                key: ValueKey(note[position].noteId),
+                direction: DismissDirection.startToEnd,
+                onDismissed: (direction) {
+                  note.remove(position);
                 },
-                subtitle:
-                    Text('${formateDateTime(note[position].lastEditDateTime)}'),
+                confirmDismiss: (direction) async {
+                  var result = await showDialog(
+                      context: context, builder: (_) => NoteDelete());
+                  debugPrint('${result.toString()}');
+                  return result;
+                },
+                background: Container(
+                  color: Colors.red,
+                  padding: EdgeInsets.only(left: 16),
+                  child: Align(child: Icon(Icons.delete , color: Colors.white),alignment: Alignment.centerLeft),
+                ),
+                child: ListTile(
+                  title: Text(
+                    note[position].noteTitle,
+                    style: TextStyle(color: Theme.of(context).primaryColor),
+                  ),
+                  onTap: () {
+                    openNoteModify(context, note[position]);
+                  },
+                  subtitle: Text(
+                      '${formateDateTime(note[position].lastEditDateTime)}'),
+                ),
               );
             },
             separatorBuilder: (_, __) => Divider(
@@ -52,7 +71,7 @@ class NoteList extends StatelessWidget {
   }
 
   void openNoteModify(BuildContext context, var note) {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => NoteModify(note)));
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => NoteModify(note)));
   }
 }
