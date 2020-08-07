@@ -7,11 +7,11 @@ import 'package:flutter_rest_api_example/models/NoteForListing.dart';
 class NoteList extends StatelessWidget {
   final note = [
     new NoteForListing('1', 'Hello 1', DateTime.now(), DateTime.now()),
-    new NoteForListing('1', 'Hello 1', DateTime.now(), DateTime.now()),
-    new NoteForListing('1', 'Hello 1', DateTime.now(), DateTime.now()),
-    new NoteForListing('1', 'Hello 1', DateTime.now(), DateTime.now()),
-    new NoteForListing('1', 'Hello 1', DateTime.now(), DateTime.now()),
-    new NoteForListing('1', 'Hello 1', DateTime.now(), DateTime.now()),
+    new NoteForListing('2', 'Hello 1', DateTime.now(), DateTime.now()),
+    new NoteForListing('3', 'Hello 1', DateTime.now(), DateTime.now()),
+    new NoteForListing('4', 'Hello 1', DateTime.now(), DateTime.now()),
+    new NoteForListing('5', 'Hello 1', DateTime.now(), DateTime.now()),
+    new NoteForListing('6', 'Hello 1', DateTime.now(), DateTime.now()),
   ];
 
   @override
@@ -22,8 +22,7 @@ class NoteList extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => NoteModify()));
+            openNoteModify(context , NoteForListing());
           },
           child: Icon(Icons.add),
         ),
@@ -34,6 +33,9 @@ class NoteList extends StatelessWidget {
                   note[position].noteTitle,
                   style: TextStyle(color: Theme.of(context).primaryColor),
                 ),
+                onTap: () {
+                  openNoteModify(context, note[position]);
+                },
                 subtitle:
                     Text('${formateDateTime(note[position].lastEditDateTime)}'),
               );
@@ -47,5 +49,10 @@ class NoteList extends StatelessWidget {
 
   String formateDateTime(var dateTime) {
     return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
+  }
+
+  void openNoteModify(BuildContext context, var note) {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => NoteModify(note)));
   }
 }
