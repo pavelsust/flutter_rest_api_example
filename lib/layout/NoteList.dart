@@ -34,7 +34,7 @@ class NoteList extends StatelessWidget {
                   style: TextStyle(color: Theme.of(context).primaryColor),
                 ),
                 subtitle: Text(
-                  '${note[position].lastEditDateTime}'
+                  '${formateDateTime(note[position].lastEditDateTime)}'
                 ),
               );
             },
@@ -44,4 +44,9 @@ class NoteList extends StatelessWidget {
                 ),
             itemCount: note.length));
   }
+  
+  String formateDateTime(var dateTime){
+    return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
+  }
 }
+

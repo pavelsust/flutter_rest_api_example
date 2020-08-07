@@ -10,6 +10,4 @@ class NoteForListing{
 
   NoteForListing.Empty();
 
-
-
 }
