@@ -1,12 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_rest_api_example/models/NoteCreate.dart';
 import 'package:flutter_rest_api_example/models/NoteForListing.dart';
 import 'package:flutter_rest_api_example/services/NoteService.dart';
 import 'package:get_it/get_it.dart';
-
-import '../models/NoteForListing.dart';
-import '../models/NoteForListing.dart';
 
 class NoteModify extends StatefulWidget {
   var noteForListing;
@@ -33,7 +31,6 @@ class _NoteModify extends State<NoteModify> {
   var errorMessage;
   var singleNote;
   var isLoading = false;
-
 
   @override
   void initState() {
@@ -81,8 +78,7 @@ class _NoteModify extends State<NoteModify> {
       ),
       body: Builder(
         builder: (context) {
-
-          if(isLoading){
+          if (isLoading) {
             Center(
               child: CircularProgressIndicator(),
             );
@@ -127,13 +123,38 @@ class _NoteModify extends State<NoteModify> {
                     width: double.infinity,
                     height: 50,
                     child: RaisedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (isEditing) {
                           // update note api
                         } else {
-                          // create api call
+                          var note = NoteCreate(
+                              titleController.text, noteContentController.text);
+                          var result = await noteService.createNote(note);
+                          var message = 'Done';
+
+                          var text = result.error
+                              ? (result.errorMessage ?? 'An error occurred')
+                              : 'Your Note is saved';
+
+
+                          showDialog(
+                              context: context,
+                              builder: (_) => AlertDialog(
+                                    title: Text(message),
+                                    content: Text(text),
+                                    actions: <Widget>[
+                                      FlatButton(
+                                        child: Text('Ok'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      )
+                                    ],
+                                  ));
                         }
-                        Navigator.of(context).pop(true);
+
+
+                        //Navigator.of(context).pop(true);
                       },
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5)),
