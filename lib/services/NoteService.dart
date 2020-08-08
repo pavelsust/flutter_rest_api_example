@@ -2,13 +2,32 @@ import 'dart:convert';
 
 import 'package:flutter_rest_api_example/models/ApiResponse.dart';
 import 'package:flutter_rest_api_example/models/NoteForListing.dart';
+import 'package:flutter_rest_api_example/models/SingleNote.dart';
 import 'package:http/http.dart' as http;
 
 class NoteService {
-  static const BASE_URL = 'http://192.168.0.100:7000/api/note/all';
+  static const BASE_URL = 'http://192.168.0.100:7000/api/note/';
+
+  Future<ApiResponse<SingleNote>> getSingleNote(noteId) {
+    return http.get(BASE_URL + '/note/' + noteId).then((value) {
+      if (value.statusCode == 200) {
+        var jsonData = json.decode(value.body);
+        var note = SingleNote(
+            id: jsonData['_id'],
+            title: jsonData['title'],
+            description: jsonData['description']);
+        return ApiResponse<SingleNote>(data: note);
+      } else {
+        return ApiResponse<SingleNote>(
+            error: true, errorMessage: 'An error occured');
+      }
+    }).catchError((onError) {
+      return ApiResponse<SingleNote>(error: true, errorMessage: onError);
+    });
+  }
 
   Future<ApiResponse<List<NoteForListing>>> getNoteList() {
-    return http.get(BASE_URL).then((value) {
+    return http.get(BASE_URL + 'all').then((value) {
       if (value.statusCode == 200) {
         var jsonData = json.decode(value.body);
         var noteList = <NoteForListing>[];
