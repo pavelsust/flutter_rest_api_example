@@ -6,7 +6,7 @@ class NoteForListing{
   var createdDateTime;
   var lastEditDateTime;
 
-  NoteForListing([this.noteId, this.noteTitle, this.createdDateTime, this.lastEditDateTime]);
+  NoteForListing({this.noteId, this.noteTitle, this.createdDateTime, this.lastEditDateTime});
 
   NoteForListing.Empty();
 

@@ -3,8 +3,6 @@ import 'package:flutter_rest_api_example/layout/NoteList.dart';
 import 'package:flutter_rest_api_example/services/NoteService.dart';
 import 'package:get_it/get_it.dart';
 
-
-
 void main() {
   setupLocator();
   runApp(MyApp());

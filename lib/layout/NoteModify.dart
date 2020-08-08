@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rest_api_example/models/NoteForListing.dart';
 
+import '../models/NoteForListing.dart';
+import '../models/NoteForListing.dart';
+
 class NoteModify extends StatelessWidget {
   var titleController = TextEditingController();
   var noteContentController = TextEditingController();
@@ -8,8 +11,8 @@ class NoteModify extends StatelessWidget {
   var noteForListing;
 
   NoteModify([this.noteForListing]);
-
   bool get isEditing => noteForListing.noteId != null;
+
 
   @override
   Widget build(BuildContext context) {

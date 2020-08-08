@@ -17,14 +17,21 @@ class NoteMainList extends StatefulWidget {
 
 class _NoteMainList extends State<NoteMainList> {
 
-  var note = [];
-
   NoteService get service => GetIt.I<NoteService>();
+
+  ApiResponse<List<NoteForListing>> apiResponse;
+
+  bool isLoading = false;
 
   @override
   void initState() {
-    note = service.getNoteList();
     super.initState();
+  }
+
+  void fetchNote() async{
+    setState((){
+      isLoading = true;
+    })
   }
 
   @override
