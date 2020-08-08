@@ -32,11 +32,15 @@ class _NoteModify extends State<NoteModify> {
 
   var errorMessage;
   var singleNote;
+  var isLoading = false;
 
 
   @override
   void initState() {
     if (isEditing) {
+      setState(() {
+        isLoading = true;
+      });
       noteService.getSingleNote(noteForListing.noteId).then((response) {
         if (response.error) {
           errorMessage = response.errorMessage ?? 'An error occurred';
@@ -46,6 +50,9 @@ class _NoteModify extends State<NoteModify> {
           showTextInField(singleNote);
           debugPrint('${singleNote.description}');
         }
+        setState(() {
+          isLoading = false;
+        });
       });
     }
     super.initState();
@@ -74,7 +81,12 @@ class _NoteModify extends State<NoteModify> {
       ),
       body: Builder(
         builder: (context) {
-          if (isEditing) {}
+
+          if(isLoading){
+            Center(
+              child: CircularProgressIndicator(),
+            );
+          }
 
           return Container(
             child: Padding(
