@@ -78,11 +78,15 @@ class _NoteModify extends State<NoteModify> {
       ),
       body: Builder(
         builder: (context) {
+
+          debugPrint('${isLoading.toString()}');
           if (isLoading) {
-            Center(
+            return Container(
+              alignment: Alignment.center,
               child: CircularProgressIndicator(),
             );
           }
+          debugPrint(' call again');
 
           return Container(
             child: Padding(
@@ -127,6 +131,9 @@ class _NoteModify extends State<NoteModify> {
                         if (isEditing) {
                           // update note api
                         } else {
+                          setState(() {
+                            isLoading = true;
+                          });
                           var note = NoteCreate(
                               titleController.text, noteContentController.text);
                           var result = await noteService.createNote(note);
@@ -136,6 +143,9 @@ class _NoteModify extends State<NoteModify> {
                               ? (result.errorMessage ?? 'An error occurred')
                               : 'Your Note is saved';
 
+                          setState(() {
+                            isLoading = false;
+                          });
 
                           showDialog(
                               context: context,
@@ -152,8 +162,6 @@ class _NoteModify extends State<NoteModify> {
                                     ],
                                   ));
                         }
-
-
                         //Navigator.of(context).pop(true);
                       },
                       shape: RoundedRectangleBorder(
