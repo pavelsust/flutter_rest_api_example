@@ -129,6 +129,24 @@ class _NoteModify extends State<NoteModify> {
                       onPressed: () async {
                         if (isEditing) {
                           // update note api
+
+                          setState(() {
+                            isLoading = true;
+                          });
+
+                          var note = NoteCreate(
+                              titleController.text, noteContentController.text
+                          );
+                          var result = await noteService.updateNote(
+                              noteForListing.noteId, note);
+                          setState(() {
+                            isLoading = false;
+                          });
+
+                          var message = 'Note Update';
+                          var text = result.error ? (result.errorMessage ??
+                              'An error occrred') : 'Your note updated';
+                          _showAlertDialog(message, text);
                         } else {
                           setState(() {
                             isLoading = true;
@@ -148,7 +166,8 @@ class _NoteModify extends State<NoteModify> {
 
                           showDialog(
                               context: context,
-                              builder: (_) => AlertDialog(
+                              builder: (_) =>
+                                  AlertDialog(
                                     title: Text(message),
                                     content: Text(text),
                                     actions: <Widget>[
@@ -162,7 +181,7 @@ class _NoteModify extends State<NoteModify> {
                                     ],
                                   )).then((data) {
                             if (result.data) {
-                              //Navigator.of(context).pop();
+                              Navigator.of(context).pop();
                             }
                           });
                         }
@@ -183,5 +202,22 @@ class _NoteModify extends State<NoteModify> {
         },
       ),
     );
+  }
+
+  void _showAlertDialog(var title, var message) {
+    var alertDialog = AlertDialog(
+      title: Text(title),
+      content: Text(message),
+      actions: <Widget>[
+        FlatButton(
+          child: Text('Ok'),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        )
+      ],
+    );
+
+    showDialog(context: context, builder: (_) => alertDialog);
   }
 }
