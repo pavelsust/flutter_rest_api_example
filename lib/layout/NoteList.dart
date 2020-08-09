@@ -109,9 +109,12 @@ class _NoteMainList extends State<NoteMainList> {
       ),
     );
   }
-}
 
-void openNoteModify(BuildContext context, var note) {
-  Navigator.push(
-      context, MaterialPageRoute(builder: (context) => NoteModify(note)));
+  void openNoteModify(BuildContext context, var note) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => NoteModify(note))).then((value){
+      fetchNote();
+    });
+  }
+
 }

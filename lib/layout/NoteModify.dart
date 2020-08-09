@@ -78,7 +78,6 @@ class _NoteModify extends State<NoteModify> {
       ),
       body: Builder(
         builder: (context) {
-
           debugPrint('${isLoading.toString()}');
           if (isLoading) {
             return Container(
@@ -156,13 +155,17 @@ class _NoteModify extends State<NoteModify> {
                                       FlatButton(
                                         child: Text('Ok'),
                                         onPressed: () {
-                                          Navigator.of(context).pop();
+                                          debugPrint('click');
+                                          Navigator.pop(context);
                                         },
                                       )
                                     ],
-                                  ));
+                                  )).then((data) {
+                            if (result.data) {
+                              //Navigator.of(context).pop();
+                            }
+                          });
                         }
-                        //Navigator.of(context).pop(true);
                       },
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5)),
