@@ -1,6 +1,9 @@
 
-class NoteForListing{
 
+import 'package:json_annotation/json_annotation.dart';
+
+@JsonSerializable()
+class NoteForListing{
   var noteId;
   var noteTitle;
   var createdDateTime;
