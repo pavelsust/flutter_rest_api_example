@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 
+
+import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_rest_api_example/layout/NoteDelete.dart';
 import 'package:flutter_rest_api_example/layout/NoteModify.dart';
@@ -78,6 +79,31 @@ class _NoteMainList extends State<NoteMainList> {
                     var result = await showDialog(
                         context: context, builder: (_) => NoteDelete());
                     debugPrint('${result.toString()}');
+
+
+                    debugPrint('note id: ${note[position].noteId}');
+
+                    if (result == true) {
+
+                      debugPrint('calling');
+
+                      var apiResult =
+                          await service.deleteNote(note[position].noteId);
+
+                      debugPrint('api result: ${apiResult.data} error ${apiResult.error}');
+
+                      var message = "Note Delete";
+                      var text = apiResult.error
+                          ? (apiResult.errorMessage ?? 'An error occurred')
+                          : 'Your Note is deleted';
+
+                      if (apiResult.error == false) {
+                        result = true;
+                        _showAlertDialog(message, text);
+                      } else {
+                        result = false;
+                      }
+                    }
                     return result;
                   },
                   background: Container(
@@ -96,7 +122,7 @@ class _NoteMainList extends State<NoteMainList> {
                       openNoteModify(context, note[position]);
                     },
                     subtitle: Text(
-                        '${note[position].createdDateTime == null ? 'nothing': note[position].createdDateTime}'),
+                        '${note[position].createdDateTime == null ? 'nothing' : note[position].createdDateTime}'),
                   ),
                 );
               },
@@ -112,9 +138,27 @@ class _NoteMainList extends State<NoteMainList> {
 
   void openNoteModify(BuildContext context, var note) {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => NoteModify(note))).then((value){
+            context, MaterialPageRoute(builder: (context) => NoteModify(note)))
+        .then((value) {
       fetchNote();
     });
   }
 
+
+  void _showAlertDialog(var title, var message) {
+    var alertDialog = AlertDialog(
+      title: Text(title),
+      content: Text(message),
+      actions: <Widget>[
+        FlatButton(
+          child: Text('Ok'),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        )
+      ],
+    );
+
+    showDialog(context: context, builder: (_) => alertDialog);
+  }
 }

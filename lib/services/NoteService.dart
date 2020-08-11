@@ -1,12 +1,13 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_rest_api_example/models/ApiResponse.dart';
 import 'package:flutter_rest_api_example/models/NoteForListing.dart';
 import 'package:flutter_rest_api_example/models/SingleNote.dart';
 import 'package:http/http.dart' as http;
 
 class NoteService {
-  static const BASE_URL = 'http://192.168.0.100:7000/api/note/';
+  static const BASE_URL = 'http://192.168.0.101:7000/api/note/';
   static const headers = {'Content-Type': 'application/json'};
 
   Future<ApiResponse<SingleNote>> getSingleNote(noteId) {
@@ -54,6 +55,23 @@ class NoteService {
       return ApiResponse<bool>(error: true, errorMessage: onError);
     });
   }
+
+
+  Future<ApiResponse<bool>> deleteNote(var noteID) {
+
+    return http.delete(BASE_URL + 'delete/' + noteID)
+        .then((value) {
+          debugPrint('Status code ${value.statusCode}');
+      if (value.statusCode == 200) {
+        return ApiResponse<bool>(data: true);
+      } else {
+        return ApiResponse<bool>(error: true, errorMessage: 'An error occured');
+      }
+    }).catchError((onError) {
+      return ApiResponse<bool>(error: true, errorMessage: onError);
+    });
+  }
+
 
   Future<ApiResponse<List<NoteForListing>>> getNoteList() {
     return http.get(BASE_URL + 'all').then((value) {
