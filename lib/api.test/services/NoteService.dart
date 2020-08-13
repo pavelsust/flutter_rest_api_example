@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_rest_api_example/models/ApiResponse.dart';
-import 'package:flutter_rest_api_example/models/NoteForListing.dart';
-import 'package:flutter_rest_api_example/models/SingleNote.dart';
+import 'package:flutter_rest_api_example/api.test/models/ApiResponse.dart';
+import 'package:flutter_rest_api_example/api.test/models/NoteForListing.dart';
+import 'package:flutter_rest_api_example/api.test/models/SingleNote.dart';
 import 'package:http/http.dart' as http;
 
 class NoteService {

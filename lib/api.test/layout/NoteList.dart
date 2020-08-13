@@ -1,13 +1,12 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_rest_api_example/layout/NoteDelete.dart';
-import 'package:flutter_rest_api_example/layout/NoteModify.dart';
-import 'package:flutter_rest_api_example/models/ApiResponse.dart';
-import 'package:flutter_rest_api_example/models/NoteForListing.dart';
-import 'package:flutter_rest_api_example/services/NoteService.dart';
+import 'package:flutter_rest_api_example/api.test/models/ApiResponse.dart';
+import 'package:flutter_rest_api_example/api.test/models/NoteForListing.dart';
+import 'package:flutter_rest_api_example/api.test/services/NoteService.dart';
 import 'package:get_it/get_it.dart';
+
+import 'NoteDelete.dart';
+import 'NoteModify.dart';
 
 class NoteMainList extends StatefulWidget {
   @override

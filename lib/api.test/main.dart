@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rest_api_example/layout/NoteList.dart';
-import 'package:flutter_rest_api_example/services/NoteService.dart';
+import 'package:flutter_rest_api_example/api.test/services/NoteService.dart';
 import 'package:get_it/get_it.dart';
+
+import 'layout/NoteList.dart';
 
 void main() {
   setupLocator();
