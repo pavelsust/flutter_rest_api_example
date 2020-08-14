@@ -6,17 +6,14 @@ import 'package:flutter_rest_api_example/bloc/BLoC/location_query_bloc.dart';
 import 'package:flutter_rest_api_example/bloc/pojo/location.dart';
 
 class LocationScreen extends StatelessWidget {
-
   final bool isFullScreenDialog;
 
-  const LocationScreen({Key key, this.isFullScreenDialog = false})
-      :super(key: key);
-
+  const LocationScreen({Key key, this.isFullScreenDialog}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final bloc = LocationQueryBloc();
-    return BlockProvider(
+    var bloc = LocationQueryBloc();
+    return BlockProvider<LocationQueryBloc>(
       bloc: bloc,
       child: Scaffold(
         appBar: AppBar(
@@ -28,14 +25,14 @@ class LocationScreen extends StatelessWidget {
               padding: EdgeInsets.all(10),
               child: TextField(
                 decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter a location'
+                  border: OutlineInputBorder(),
+                  hintText: "Enter a location",
                 ),
                 onChanged: (query) => bloc.submitQuery(query),
               ),
             ),
             Expanded(
-              child:,
+              child: _buildResults(bloc),
             )
           ],
         ),
@@ -43,17 +40,39 @@ class LocationScreen extends StatelessWidget {
     );
   }
 
-  Widget buildSearchResult(List<Location> results) {
-    return ListView.separated(separatorBuilder:
-        (BuildContext context, int index) => Divider()
-        , itemCount: results.length, itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(results[index].title),
-            onTap: (){
-              var locationBloc = BlockProvider.
-            },
-          );
-        });
+  Widget _buildResults(LocationQueryBloc bloc) {
+    return StreamBuilder<List<Location>>(
+      stream: bloc.locationStream,
+      builder: (context, snapshot) {
+        final result = snapshot.data;
+        if (result == null) {
+          return Center(child: Text('Enter a location'));
+        }
+        if (result.isEmpty) {
+          return Center(child: Text('Enter a location'));
+        }
+
+        return _buildSearchResults(result);
+      },
+    );
   }
 
+  Widget _buildSearchResults(List<Location> results) {
+    return ListView.separated(
+        itemBuilder: (context, index) {
+          final location = results[index];
+          return ListTile(
+            title: Text(location.title),
+            onTap: () {
+              final locationBloc = BlockProvider.of<LocationBloc>(context);
+              locationBloc.selectLocation(location);
+              if (isFullScreenDialog) {
+                Navigator.of(context).pop();
+              }
+            },
+          );
+        },
+        separatorBuilder: null,
+        itemCount: results.length);
+  }
 }
