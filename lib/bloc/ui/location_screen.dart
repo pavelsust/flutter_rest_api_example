@@ -6,10 +6,8 @@ import 'package:flutter_rest_api_example/bloc/BLoC/location_query_bloc.dart';
 import 'package:flutter_rest_api_example/bloc/pojo/location.dart';
 
 class LocationScreen extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-
     var bloc = LocationQueryBloc();
     return BlocProvider<LocationQueryBloc>(
       bloc: bloc,
@@ -39,7 +37,6 @@ class LocationScreen extends StatelessWidget {
   }
 
   Widget _buildResults(LocationQueryBloc bloc) {
-
     return StreamBuilder<List<Location>>(
       stream: bloc.locationStream,
       builder: (context, snapshot) {
@@ -62,9 +59,10 @@ class LocationScreen extends StatelessWidget {
           final location = results[index];
           return ListTile(
             title: Text(location.title),
-            onTap: () {
-              var locationBloc = BlocProvider.of<LocationBloc>(context);
-              debugPrint(locationBloc.toString());
+            onTap: () async {
+              var locationBloc =  BlocProvider.of<LocationBloc>(context);
+              locationBloc.selectLocation(location);
+              Navigator.of(context).maybePop();
             },
           );
         },

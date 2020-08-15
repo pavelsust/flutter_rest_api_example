@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rest_api_example/bloc/BLoC/bloc_provider.dart';
 import 'package:flutter_rest_api_example/bloc/BLoC/restaurant_bloc.dart';
@@ -12,27 +11,29 @@ class RestaurantScreen extends StatelessWidget {
 
   const RestaurantScreen({this.location});
 
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(location.title),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.favorite_border),
-            onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (_) => FavoriteScreen()));
-            },
-          )
-        ],
+        title: Text('Hello')
       ),
-      body: _buildSearch(context),
+      body: _buildSearch(context)
+    );
+  }
+
+
+  Widget show(){
+    return Center(
+      child: Text('Show Text'),
     );
   }
 
   Widget _buildSearch(BuildContext context) {
     final bloc = RestaurantBloc(location);
+
+
     return BlocProvider(
       bloc: bloc,
       child: Column(

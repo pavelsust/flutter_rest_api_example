@@ -17,7 +17,7 @@ class MainScreen extends StatelessWidget {
         if(location == null){
           return LocationScreen();
         }
-        return RestaurantScreen();
+        return RestaurantScreen(location: location);
       },
     );
   }
