@@ -33,7 +33,7 @@ class RestaurantScreen extends StatelessWidget {
 
   Widget _buildSearch(BuildContext context) {
     final bloc = RestaurantBloc(location);
-    return BlockProvider(
+    return BlocProvider(
       bloc: bloc,
       child: Column(
         children: <Widget>[

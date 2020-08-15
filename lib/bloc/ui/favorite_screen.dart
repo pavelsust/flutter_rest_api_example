@@ -15,7 +15,7 @@ class FavoriteScreen extends StatefulWidget {
 class _FavoriteScreen extends State<FavoriteScreen> {
   @override
   Widget build(BuildContext context) {
-    var bloc = BlockProvider.of<FavoriteBlock>(context);
+    var bloc = BlocProvider.of<FavoriteBlock>(context);
 
     return Scaffold(
       appBar: AppBar(

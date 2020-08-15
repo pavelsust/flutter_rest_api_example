@@ -71,7 +71,7 @@ class RestaurantDetailsScreen extends StatelessWidget {
   }
 
   Widget _buildFavoriteButton(BuildContext context) {
-    final bloc = BlockProvider.of<FavoriteBlock>(context);
+    final bloc = BlocProvider.of<FavoriteBlock>(context);
     return StreamBuilder<List<Restaurant>>(
       stream: bloc.favoriteStream,
       initialData: bloc.favourite,
